@@ -12,3 +12,24 @@ For Windows systems the environment variable can be configured under `My Compute
 With this configuration in place the `grails` command can connect and authenticate via a proxy.
 
 Secondly, since Grails uses Gradle as the build system, you need to configure Gradle to authenticate via the proxy. For instructions on how to do this see the https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy[Gradle user guide section on the topic].
+
+For Grails 3.3.5 
+Although Grails is based on Gradle build system, Spring Framework used behind the scenes seems to use Eclipse Aether project
+(https://projects.eclipse.org/projects/technology.aether) that in turn has dependency on Maven. 
+In case you are receiving "Bad Gateway (502)" or "Connection Refused" errors right after running Grails CLI for first time,
+add configuration for maven proxy in to $HOME/.m2/settings.xml (%USERPROFILE%\.m2\settings.xml)
+...
+<proxies>
+    <proxy>
+      <id>my-proxy</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>localhost</host>
+      <port>8888</port>
+      <!-- nonProxyHosts>localhost|*.int</nonProxyHosts -->
+    </proxy>
+</proxies>
+...
+
+This should bring in Grails Profiles.
+More info on syntax https://maven.apache.org/guides/mini/guide-proxies.html
